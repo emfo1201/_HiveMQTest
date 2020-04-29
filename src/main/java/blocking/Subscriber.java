@@ -26,7 +26,8 @@ public class Subscriber {
 
         try (final Mqtt5BlockingClient.Mqtt5Publishes publishes = client.publishes(MqttGlobalPublishFilter.ALL)) {
 
-            client.subscribeWith().topicFilter("a/b/c").qos(MqttQos.AT_LEAST_ONCE).send();
+            client.subscribeWith().addSubscription().topicFilter("a/b/c").qos(MqttQos.AT_LEAST_ONCE).applySubscription()
+            .addSubscription().topicFilter("a/b/d").qos(MqttQos.AT_LEAST_ONCE).applySubscription().send();
 
             while (true){
                 String message = new String(publishes.receive().getPayloadAsBytes());
@@ -34,6 +35,7 @@ public class Subscriber {
                 sumOfMessageLatency.addAndGet(messageLatency);
                 listOfMessageLatencyTimes.add(messageLatency);
                 printCurrentResult(sumOfMessageLatency.get(),listOfMessageLatencyTimes.size());
+                sleep(100);
             }
 
         } finally {
