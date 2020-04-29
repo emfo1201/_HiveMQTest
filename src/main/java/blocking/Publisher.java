@@ -3,15 +3,13 @@ package blocking;
 import com.hivemq.client.mqtt.datatypes.MqttQos;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
-
-import java.io.*;
 import java.time.LocalTime;
 import java.util.UUID;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
 
 public class Publisher {
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) {
         LocalTime start = java.time.LocalTime.now();
         System.out.println("Test started: " + start);
 
