@@ -68,11 +68,9 @@ public class Subscriber {
     }
 
     private static long calculateMessageLatency(String publish){
-        LocalTime sentTime = java.time.LocalTime.parse(publish);
+        LocalTime sentTime = LocalTime.parse(publish);
         LocalTime receivedTime = java.time.LocalTime.now();
-        long mill = MILLIS.between(sentTime,receivedTime);
-        System.out.println("Packet latency = " + mill);
-        return mill;
+        return MILLIS.between(sentTime,receivedTime);
     }
 
     private static void printCurrentResult(long sumOfMessageLatency, int numberOfMessagesReceived){
