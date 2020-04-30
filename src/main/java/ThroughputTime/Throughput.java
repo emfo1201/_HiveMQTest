@@ -19,9 +19,15 @@ public class Throughput {
         Scanner latency = new Scanner(System.in);
         long totLatency = latency.nextLong();
 
+        System.out.println("Number of sent messages: ");
+        Scanner sentMessages = new Scanner(System.in);
+        int totsentMessages = sentMessages.nextInt();
+
         System.out.println("Number of received messages: ");
         Scanner messages = new Scanner(System.in);
-        int totMessages = messages.nextInt();
+        int totReceivedMessages = messages.nextInt();
+
+        int dropped = totsentMessages - totReceivedMessages;
 
         Duration d = Duration.between(startTime, endTime);
         long minutes = d.toMinutes();
@@ -34,7 +40,8 @@ public class Throughput {
         long millisec =  milliseconds - secomintomillis;
 
         System.out.println("Test total time is: " + minutes + " minutes, " + seconds + " seconds and " + millisec + " milliseconds, or just simply " + milliseconds + " milliseconds, if you prefer it like that.");
-        System.out.println("Throughput: " + (double)totMessages/secmilli);
-        System.out.println("Average latency per packet: " + totLatency/totMessages + " milliseconds.");
+        System.out.println("Throughput: " + (double)totReceivedMessages/secmilli);
+        System.out.println("Average latency per packet: " + totLatency/totReceivedMessages + " milliseconds.");
+        System.out.println("Number of dropped messages: " + dropped);
     }
 }
