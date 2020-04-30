@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import static java.time.temporal.ChronoUnit.*;
 
 public class Subscriber {
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
+    public static void main(String[] args) {
         ArrayList<Long> listOfMessageLatencyTimes = new ArrayList<>();
 
         Mqtt5RxClient client = Mqtt5Client.builder()
@@ -50,11 +50,6 @@ public class Subscriber {
         Completable subscribeScenario = subAckAndMatchingPublishes
                 .doOnSingle(subAck -> System.out.println("Subscribed, " + subAck.getReasonCodes()))
                 .doOnNext(publish -> {
-            /*        long messageLatency = calculateMessageLatency(publish);
-                    sumOfMessageLatency.addAndGet(messageLatency);
-                    listOfMessageLatencyTimes.add(messageLatency);
-                    printCurrentResult(sumOfMessageLatency.get(),listOfMessageLatencyTimes.size());
-*/
                     String message = new String(publish.getPayloadAsBytes());
                     String[] split = message.split(" ");
                     long messageLatency = calculateMessageLatency(split[1]);
@@ -69,13 +64,13 @@ public class Subscriber {
         connectScenario.andThen(subscribeScenario).blockingAwait();
     }
 
-    public static long calculateMessageLatency(String publish){
+    private static long calculateMessageLatency(String publish){
         LocalTime sentTime = LocalTime.parse(publish);
         LocalTime receivedTime = java.time.LocalTime.now();
         return MILLIS.between(sentTime,receivedTime);
     }
 
-    public static void printCurrentResult(long sumOfMessageLatency, int numberOfMessagesReceived, String messageNumber) {
+    private static void printCurrentResult(long sumOfMessageLatency, int numberOfMessagesReceived, String messageNumber) {
         System.out.println("======================");
         System.out.println("Current time: " + java.time.LocalTime.now());
         System.out.println("Message number: " + messageNumber);
