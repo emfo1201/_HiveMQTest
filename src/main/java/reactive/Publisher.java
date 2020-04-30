@@ -29,10 +29,10 @@ public class Publisher {
 
 
 // Fake a stream of Publish messages with an incrementing number in the payload
-        Flowable<Mqtt5Publish> messagesToPublish = Flowable.range(0, 200)
+        Flowable<Mqtt5Publish> messagesToPublish = Flowable.range(0, 2000)
                 .map(i -> Mqtt5Publish.builder()
                         .topic("a/b/c")
-                        .qos(MqttQos.AT_LEAST_ONCE)
+                        .qos(MqttQos.AT_MOST_ONCE)
                         .payload((i + " " + java.time.LocalTime.now()).getBytes())
                         .build());
 
