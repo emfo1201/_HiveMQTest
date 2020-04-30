@@ -76,6 +76,7 @@ public class Subscriber {
 
     private static void printCurrentResult(long sumOfMessageLatency, int numberOfMessagesReceived, String messageNumber){
         System.out.println("======================");
+        System.out.println("Current time: " + java.time.LocalTime.now());
         System.out.println("Message number: " + messageNumber);
         System.out.println("Number Of Messages Received : " + numberOfMessagesReceived);
         System.out.println("Total latency : " + sumOfMessageLatency);
