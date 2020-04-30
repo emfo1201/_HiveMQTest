@@ -7,13 +7,17 @@ import java.util.Scanner;
 public class Throughput {
     public static void main(String[] args){
 
-        System.out.println("Start time: ");
-        Scanner startTimeIn = new Scanner(System.in);
-        LocalTime startTime = LocalTime.parse(startTimeIn.nextLine());
+        System.out.println("Publisher start time: ");
+        Scanner pubStartTimeIn = new Scanner(System.in);
+        LocalTime startTime = LocalTime.parse(pubStartTimeIn.nextLine());
 
-        System.out.println("End time: ");
-        Scanner endTimeIn = new Scanner(System.in);
-        LocalTime endTime = LocalTime.parse(endTimeIn.nextLine());
+        System.out.println("Publisher end time: ");
+        Scanner pubEndTimeIn = new Scanner(System.in);
+        LocalTime pubEndTime = LocalTime.parse(pubEndTimeIn.nextLine());
+
+        System.out.println("Subscriber end time: ");
+        Scanner subEndTimeIn = new Scanner(System.in);
+        LocalTime endTime = LocalTime.parse(subEndTimeIn.nextLine());
 
         System.out.println("Total latency: ");
         Scanner latency = new Scanner(System.in);
@@ -43,5 +47,6 @@ public class Throughput {
         System.out.println("Throughput: " + (double)totReceivedMessages/secmilli);
         System.out.println("Average latency per packet: " + totLatency/totReceivedMessages + " milliseconds.");
         System.out.println("Number of dropped messages: " + dropped);
+        System.out.println("Publish rate: " + (double)totsentMessages/((double)Duration.between(startTime,pubEndTime).toMillis()/1000));
     }
 }
