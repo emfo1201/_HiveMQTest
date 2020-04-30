@@ -15,7 +15,7 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 
 public class Subscriber {
     public static void main(String[] args) throws InterruptedException {
-        ArrayList<Long> listOfMessageLatencyTimes = new ArrayList<Long>();
+        ArrayList<Long> listOfMessageLatencyTimes = new ArrayList<>();
         AtomicLong sumOfMessageLatency = new AtomicLong();
 
         final Mqtt5BlockingClient client = Mqtt5Client.builder()
@@ -31,10 +31,11 @@ public class Subscriber {
 
             while (true){
                 String message = new String(publishes.receive().getPayloadAsBytes());
-                long messageLatency = calculateMessageLatency(message);
+                String[] split = message.split(" ");
+                long messageLatency = calculateMessageLatency(split[1]);
                 sumOfMessageLatency.addAndGet(messageLatency);
                 listOfMessageLatencyTimes.add(messageLatency);
-                printCurrentResult(sumOfMessageLatency.get(),listOfMessageLatencyTimes.size());
+                printCurrentResult(sumOfMessageLatency.get(),listOfMessageLatencyTimes.size(), split[0]);
                 sleep(100);
             }
 
@@ -43,14 +44,15 @@ public class Subscriber {
         }
     }
 
-    public static long calculateMessageLatency(String message) {
+    private static long calculateMessageLatency(String message) {
         LocalTime sentTime = LocalTime.parse(message);
         LocalTime receivedTime = java.time.LocalTime.now();
         return MILLIS.between(sentTime, receivedTime);
     }
 
-    public static void printCurrentResult(long sumOfMessageLatency, int numberOfMessagesReceived){
+    private static void printCurrentResult(long sumOfMessageLatency, int numberOfMessagesReceived, String messageNumber){
         System.out.println("======================");
+        System.out.println("Message number: " + messageNumber);
         System.out.println("Number Of Messages Received : " + numberOfMessagesReceived);
         System.out.println("Total latency : " + sumOfMessageLatency);
         System.out.println("======================\n");

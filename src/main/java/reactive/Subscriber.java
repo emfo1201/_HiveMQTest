@@ -54,10 +54,11 @@ public class Subscriber {
                 .doOnSingle(subAck -> System.out.println("Subscribed, " + subAck.getReasonCodes()))
                 .doOnNext(publish -> {
                     String message = new String(publish.getPayloadAsBytes());
-                    long messageLatency = calculateMessageLatency(message);
+                    String[] split = message.split(" ");
+                    long messageLatency = calculateMessageLatency(split[1]);
                     sumOfMessageLatency.addAndGet(messageLatency);
                     listOfMessageLatencyTimes.add(messageLatency);
-                    printCurrentResult(sumOfMessageLatency.get(),listOfMessageLatencyTimes.size());
+                    printCurrentResult(sumOfMessageLatency.get(),listOfMessageLatencyTimes.size(), split[0]);
 
                     Thread.sleep(100);
                 })
@@ -73,11 +74,11 @@ public class Subscriber {
         return MILLIS.between(sentTime,receivedTime);
     }
 
-    private static void printCurrentResult(long sumOfMessageLatency, int numberOfMessagesReceived){
+    private static void printCurrentResult(long sumOfMessageLatency, int numberOfMessagesReceived, String messageNumber){
         System.out.println("======================");
+        System.out.println("Message number: " + messageNumber);
         System.out.println("Number Of Messages Received : " + numberOfMessagesReceived);
-        System.out.println("Current time: " + java.time.LocalTime.now());
         System.out.println("Total latency : " + sumOfMessageLatency);
-        System.out.println("======================");
+        System.out.println("======================\n");
     }
 }

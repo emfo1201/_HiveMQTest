@@ -20,7 +20,8 @@ public class Publisher {
         client.connect();
 
         for(int i = 0; i < 2000; i++) {
-            client.publishWith().topic("a/b/c").qos(MqttQos.AT_LEAST_ONCE).payload(java.time.LocalTime.now().toString().getBytes()).send();
+            String line = i + " " + java.time.LocalTime.now().toString();
+            client.publishWith().topic("a/b/c").qos(MqttQos.AT_LEAST_ONCE).payload(line.getBytes()).send();
         }
         client.disconnect();
 

@@ -33,7 +33,7 @@ public class Publisher {
                 .map(i -> Mqtt5Publish.builder()
                         .topic("a/b/c")
                         .qos(MqttQos.AT_LEAST_ONCE)
-                        .payload(("" + java.time.LocalTime.now()).getBytes())
+                        .payload((i + " " + java.time.LocalTime.now()).getBytes())
                         .build());
 
 // As we use the reactive API, the following line does not publish yet, but returns a reactive type.
